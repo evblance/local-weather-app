@@ -1,0 +1,122 @@
+body {
+  background-color: rgb(222, 222, 222);
+}
+
+h1 {
+    color: rgb(87, 68, 68);
+    display: block;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    font-size: 3em;
+}
+
+h2 {
+    color: rgb(87, 68, 68);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    font-size: 1.5em;
+    text-align: center;
+    display: block;
+}
+
+h3 {
+    color: rgb(87, 68, 68);
+    font-family: 'Raleway', sans-serif;
+    font-size: 1em;
+    font-weight: 500;
+    text-align: center;
+    display: block;
+}
+
+p#attr {
+    color: black;
+    text-align: center;
+    display: block;
+    clear: both;
+}
+
+#openweather-link:link {
+    color: #f49e00;
+    text-decoration: none;
+}
+
+#openweather-link:hover {
+    cursor: pointer;
+    color: #ffd890;
+}
+
+#openweather-link:visited {
+    color: #f49e00;
+}
+
+#temperature {
+    color: rgb(53, 60, 60);
+    font-family: 'Raleway';
+    font-weight: 500;
+    font-size: 3em;
+}
+
+#scale {
+    line-height: 100px;
+    color: rgb(53, 60, 60);
+    font-family: 'Raleway';
+    font-weight: 500;
+    font-size: 3em;
+}
+
+#conditions {
+  font-size: 1.5em;
+}
+
+ul#weather-well {
+    background-color: rgb(242, 242, 242);
+    color: rgb(87, 68, 68);
+    width: 75%;
+    margin: auto;
+    max-width: 564px;
+    min-height: 200px;
+    border: 5px solid white;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    outline-color: blue;
+}
+
+
+ul#weather-well li {
+  display: inline;
+  text-align: center;
+  float: left;
+  width: 33%;
+  height: 100%;
+  
+}
+
+
+.padded-alignleft {
+  padding-right: 5px;
+  text-align: left;
+}
+
+.padded-centering {
+   padding-top: 3em;
+}
+
+.left-padding {
+  padding-left: 2em;
+}
+
+ul#weather-well li p {
+  display: inline;
+  font-family: 'Cinzel', serif;
+  color: rgb(46, 28, 48); 
+}
+
+#measure-toggle {
+    color: rgb(51, 51, 51);
+    font-family: 'Raleway', serif;
+    font-size: 0.85em;
+    transition: all 1s;
+    cursor: pointer;
+    text-align: center;
+}
