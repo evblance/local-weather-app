@@ -1,0 +1,53 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+<link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Cinzel' rel='stylesheet' type='text/css'>
+
+<h1>Local Weather</h1>
+
+<h2>in <span id="city">N/A</span></h2>
+
+
+<ul id="weather-well">
+  <li class="padded-centering">
+    <div class="padded-alignleft">
+      <p id="wind-label">Wind: </p>
+      <p id="wind-speed">N/A</p>
+      <p id="wind-speed-unit">km/h</p>
+      <p id="wind-direction">???</p>
+    </div>
+    <div class="padded-alignleft">
+      <p id="humidity-label">Humidity: </p>
+      <p id="humidity-value">N/A</p>
+      <p id="humidity-unit">%</p>
+    </div>
+    <div class="padded-alignleft">
+      <p id="pressure-label">Pressure: </p>
+      <p id="pressure-value">N/A</p>
+      <p id="pressure-unit">hPa</p>
+    </div>
+  </li>
+  <li class="padded-centering">
+    <div>
+      <p id="conditions">N/A</p>
+    </div>
+    <div>
+      <p id="conditions-icon"></p>
+    </div>
+  </li>
+  <li class="padded-centering">
+    <div>
+      <p id="temperature">N/A</p>
+      <p id="scale">&deg;</p>
+    </div>
+  </li>
+</ul>
+
+<h3>last retrieved: <span id="time" style="padding-left:10px">N/A</span></h3>
+
+<div id="units">
+  <p id="measure-toggle"><span id="celsius">metric</span>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp<span id="fahrenheit">imperial</span></p>
+</div>
+<div id="attribution">
+  <p id="attr">Powered by <a id="openweather-link" href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a></p>
+</div>
