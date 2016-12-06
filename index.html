@@ -1,55 +1,340 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-<script src="./main.js"></script>
+<head>
 
-<link href="./main.css" rel="stylesheet" type="text/css">
-<link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Cinzel' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
-<h1>Local Weather</h1>
+  <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Cinzel' rel='stylesheet' type='text/css'>
 
-<h2>in <span id="city">N/A</span></h2>
+  <style>
+    body {
+      background-color: rgb(222, 222, 222);
+    }
+
+    h1 {
+        color: rgb(87, 68, 68);
+        display: block;
+        text-align: center;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 500;
+        font-size: 3em;
+    }
+
+    h2 {
+        color: rgb(87, 68, 68);
+        font-family: 'Raleway', sans-serif;
+        font-weight: 500;
+        font-size: 1.5em;
+        text-align: center;
+        display: block;
+    }
+
+    h3 {
+        color: rgb(87, 68, 68);
+        font-family: 'Raleway', sans-serif;
+        font-size: 1em;
+        font-weight: 500;
+        text-align: center;
+        display: block;
+    }
+
+    p#attr {
+        color: black;
+        text-align: center;
+        display: block;
+        clear: both;
+    }
+
+    #openweather-link:link {
+        color: #f49e00;
+        text-decoration: none;
+    }
+
+    #openweather-link:hover {
+        cursor: pointer;
+        color: #ffd890;
+    }
+
+    #openweather-link:visited {
+        color: #f49e00;
+    }
+
+    #temperature {
+        color: rgb(53, 60, 60);
+        font-family: 'Raleway';
+        font-weight: 500;
+        font-size: 3em;
+    }
+
+    #scale {
+        line-height: 100px;
+        color: rgb(53, 60, 60);
+        font-family: 'Raleway';
+        font-weight: 500;
+        font-size: 3em;
+    }
+
+    #conditions {
+      font-size: 1.5em;
+    }
+
+    ul#weather-well {
+        background-color: rgb(242, 242, 242);
+        color: rgb(87, 68, 68);
+        width: 75%;
+        margin: auto;
+        max-width: 564px;
+        min-height: 200px;
+        border: 5px solid white;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        outline-color: blue;
+    }
 
 
-<ul id="weather-well">
-  <li class="padded-centering">
-    <div class="padded-alignleft">
-      <p id="wind-label">Wind: </p>
-      <p id="wind-speed">N/A</p>
-      <p id="wind-speed-unit">km/h</p>
-      <p id="wind-direction">???</p>
-    </div>
-    <div class="padded-alignleft">
-      <p id="humidity-label">Humidity: </p>
-      <p id="humidity-value">N/A</p>
-      <p id="humidity-unit">%</p>
-    </div>
-    <div class="padded-alignleft">
-      <p id="pressure-label">Pressure: </p>
-      <p id="pressure-value">N/A</p>
-      <p id="pressure-unit">hPa</p>
-    </div>
-  </li>
-  <li class="padded-centering">
-    <div>
-      <p id="conditions">N/A</p>
-    </div>
-    <div>
-      <p id="conditions-icon"></p>
-    </div>
-  </li>
-  <li class="padded-centering">
-    <div>
-      <p id="temperature">N/A</p>
-      <p id="scale">&deg;</p>
-    </div>
-  </li>
-</ul>
+    ul#weather-well li {
+      display: inline;
+      text-align: center;
+      float: left;
+      width: 33%;
+      height: 100%;
 
-<h3>last retrieved: <span id="time" style="padding-left:10px">N/A</span></h3>
+    }
 
-<div id="units">
-  <p id="measure-toggle"><span id="celsius">metric</span>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp<span id="fahrenheit">imperial</span></p>
-</div>
-<div id="attribution">
-  <p id="attr">Powered by <a id="openweather-link" href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a></p>
-</div>
+
+    .padded-alignleft {
+      padding-right: 5px;
+      text-align: left;
+    }
+
+    .padded-centering {
+       padding-top: 3em;
+    }
+
+    .left-padding {
+      padding-left: 2em;
+    }
+
+    ul#weather-well li p {
+      display: inline;
+      font-family: 'Cinzel', serif;
+      color: rgb(46, 28, 48); 
+    }
+
+    #measure-toggle {
+        color: rgb(51, 51, 51);
+        font-family: 'Raleway', serif;
+        font-size: 0.85em;
+        transition: all 1s;
+        cursor: pointer;
+        text-align: center;
+    }
+  </style>
+
+  <script>
+    formatTime = function (time) {
+      var year = time.getFullYear();
+      var month = ("0" + (time.getMonth() + 1)).slice(-2);
+      var date = ("0" + time.getDate()).slice(-2);
+      var hours = ("0" + time.getHours()).slice(-2);
+      var minutes = ("0" + time.getMinutes()).slice(-2);
+
+      return year + "/" + month + "/" + date + " @ " + hours + ":" + minutes;
+    };
+
+    getCity = function (json) {
+        return json.list[0].name;
+    };
+
+    getTemperature = function (json) {
+        var temperature = json.list[0].main.temp;
+        return Math.round(temperature);
+    };
+
+    getHumidity = function (json) {
+        return json.list[0].main.humidity;
+    };
+
+    getPressure = function (json) {
+        var pressure = json.list[0].main.pressure;
+        return Number(pressure).toFixed(1);
+    };
+
+    getConditions = function (json) {
+        return json.list[0].weather[0].main;
+    };
+
+    getConditionsIcon = function (json) {
+        // returns the icon associated with the conditions, which can be accessed via
+        // http://openweathermap.org/img/w/<icon>.png
+        return json.list[0].weather[0].icon;
+    };
+
+    getWindSpeed = function (json) { 
+        var speed = json.list[0].wind.speed;
+        return Number(speed * 3.6).toFixed(1);
+    };
+
+    getWindDirection = function (json) {
+
+        var degrees = json.list[0].wind.deg;
+
+        if (degrees >= 337.5 || degrees <= 22.4) {
+            return "N";
+        } else if (degrees >= 22.5 && degrees <= 67.4) {
+            return "NE";
+        } else if (degrees >= 67.5 && degrees <= 112.4) {
+            return "E";
+        } else if (degrees >= 112.5 && degrees <= 157.4) {
+            return "SE";
+        } else if (degrees >= 157.5 && degrees <= 202.4) {
+            return "S";
+        } else if (degrees >= 202.5 && degrees <= 247.4) {
+            return "SW";
+        } else if (degrees >= 247.5 && degrees <= 292.4) {
+            return "W";
+        } else if (degrees >= 292.5 && degrees <= 337.4) {
+            return "NW";
+        } else {
+            console.log("Error: Could not map the wind direction to a string!");
+        }
+    };
+
+    geolocationFailure = function () {
+         alert("App failed to retrieve your location. You have either blocked the request or your browser is blocking it for you.");
+    };
+
+
+    fetchWeather = function(lat, lon) {
+        var lat = lat;
+        var lon = lon;
+
+        request_time = new Date();
+        formatTime(request_time);
+
+
+        var weatherRequest = new XMLHttpRequest();
+        var request = "http://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
+        weatherRequest.open("GET", request, false);
+        weatherRequest.send();
+        console.log(weatherRequest.status);
+        console.log(weatherRequest.statusText);
+
+        var weatherJSON = JSON.parse(weatherRequest.response);
+
+        $('#celsius').css('color', 'rgb(179, 107, 0)');
+        // populate weather details
+        $('#time').html(formatTime(request_time));
+        $('#city').html(getCity(weatherJSON));
+        $('#temperature').html(getTemperature(weatherJSON));
+        $('#scale').html("&degC");
+        $('#conditions').html(getConditions(weatherJSON));
+        $('#conditions-icon').html("<img class='weather-dets' src='http://openweathermap.org/img/w/"+getConditionsIcon(weatherJSON)+".png' alt='weather-icon'></img>");
+        $('#wind-speed').html(getWindSpeed(weatherJSON));
+        $('#wind-direction').html(getWindDirection(weatherJSON));
+        $('#humidity-value').html(getHumidity(weatherJSON));
+        $('#pressure-value').html(getPressure(weatherJSON));
+
+    };
+
+
+    $(document).ready(function () {
+        //'use strict';
+
+        var metric = true;
+
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                fetchWeather(position.coords.latitude, position.coords.longitude);
+            }, geolocationFailure);
+        }
+
+
+        $('#measure-toggle').on('click', function () {
+            // Condition to prevent issues if user clicks toggle before data has been fetched
+            if ($('#temperature').html() !== "N/A") {
+                var temperature = $('#temperature').html();
+                var wind = $('#wind-speed').html();
+
+                if (metric) {
+                    fahrenheitTemp = Math.round(temperature * 9/5 + 32);
+                    $('#temperature').html(fahrenheitTemp);
+                    $('#scale').html("&degF");
+                    var imperialWind = Number(wind * 0.621371).toFixed(1);
+                    $('#wind-speed').html(imperialWind);
+                    $('#wind-speed-unit').html("mi/h");
+                    $('#pressure-unit').html("mbar");
+                    $('#fahrenheit').css('color', 'rgb(179, 107, 0)');
+                    $('#celsius').css('color', 'rgb(51, 31, 0)');
+                    metric = false;
+                } else {
+                    celsiusTemp = Math.round((temperature-32) * 5/9);
+                    $('#temperature').html(celsiusTemp);
+                    $('#scale').html("&degC");
+                    var metricWind = Number(wind / 0.621371).toFixed(1);
+                    $('#wind-speed').html(metricWind);
+                    $("#wind-speed-unit").html("km/h");
+                    $('#pressure-unit').html("hPa");
+                    $('#celsius').css('color', 'rgb(179, 107, 0)');
+                    $('#fahrenheit').css('color', 'rgb(51, 31, 0)');
+                    metric = true;
+                }
+
+            }
+
+        });
+    });
+  </script>
+</head>
+
+<body>
+  <h1>Local Weather</h1>
+
+  <h2>in <span id="city">N/A</span></h2>
+
+
+  <ul id="weather-well">
+    <li class="padded-centering">
+      <div class="padded-alignleft">
+        <p id="wind-label">Wind: </p>
+        <p id="wind-speed">N/A</p>
+        <p id="wind-speed-unit">km/h</p>
+        <p id="wind-direction">???</p>
+      </div>
+      <div class="padded-alignleft">
+        <p id="humidity-label">Humidity: </p>
+        <p id="humidity-value">N/A</p>
+        <p id="humidity-unit">%</p>
+      </div>
+      <div class="padded-alignleft">
+        <p id="pressure-label">Pressure: </p>
+        <p id="pressure-value">N/A</p>
+        <p id="pressure-unit">hPa</p>
+      </div>
+    </li>
+    <li class="padded-centering">
+      <div>
+        <p id="conditions">N/A</p>
+      </div>
+      <div>
+        <p id="conditions-icon"></p>
+      </div>
+    </li>
+    <li class="padded-centering">
+      <div>
+        <p id="temperature">N/A</p>
+        <p id="scale">&deg;</p>
+      </div>
+    </li>
+  </ul>
+
+  <h3>last retrieved: <span id="time" style="padding-left:10px">N/A</span></h3>
+
+  <div id="units">
+    <p id="measure-toggle"><span id="celsius">metric</span>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp<span id="fahrenheit">imperial</span></p>
+  </div>
+  <div id="attribution">
+    <p id="attr">Powered by <a id="openweather-link" href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a></p>
+  </div>
+</body>
+
