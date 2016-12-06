@@ -79,7 +79,7 @@ fetchWeather = function(lat, lon) {
     formatTime(request_time);
     
     var weatherRequest = new XMLHttpRequest();
-    var request = "http://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
+    var request = "https://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
     weatherRequest.open("GET", request, false);
     weatherRequest.send();
     console.log(weatherRequest.status);
