@@ -78,8 +78,35 @@ fetchWeather = function(lat, lon) {
     request_time = new Date();
     formatTime(request_time);
     
+    $.ajax({
+       url: "http://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7",
+       type: 'GET',
+       dataType: 'json',
+       async: 'false',
+       contentType: 'application/json; charset=utf-8',
+       success: function(data) {
+        var weatherJSON = JSON.parse(data);
+           
+        $('#celsius').css('color', 'rgb(179, 107, 0)');
+        // populate weather details
+        $('#time').html(formatTime(request_time));
+        $('#city').html(getCity(weatherJSON));
+        $('#temperature').html(getTemperature(weatherJSON));
+        $('#scale').html("&degC");
+        $('#conditions').html(getConditions(weatherJSON));
+        $('#conditions-icon').html("<img class='weather-dets' src='http://openweathermap.org/img/w/"+getConditionsIcon(weatherJSON)+".png' alt='weather-icon'></img>");
+        $('#wind-speed').html(getWindSpeed(weatherJSON));
+        $('#wind-direction').html(getWindDirection(weatherJSON));
+        $('#humidity-value').html(getHumidity(weatherJSON));
+        $('#pressure-value').html(getPressure(weatherJSON));
+       }
+        
+    });
+    
+    /*
+    
     var weatherRequest = new XMLHttpRequest();
-    var request = "https://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
+    var request = "http://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
     weatherRequest.open("GET", request, false);
     weatherRequest.send();
     console.log(weatherRequest.status);
@@ -99,6 +126,8 @@ fetchWeather = function(lat, lon) {
     $('#wind-direction').html(getWindDirection(weatherJSON));
     $('#humidity-value').html(getHumidity(weatherJSON));
     $('#pressure-value').html(getPressure(weatherJSON));
+    
+    */
 };
 
 
