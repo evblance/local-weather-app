@@ -218,7 +218,7 @@ var fetchTimer = window.setInterval(function() {
 
 $('.switch-container').on('click', function() {
 
-  if ($('#temperature').text() !== '') {
+  if ($('#temperature').text() !== '' && $('#temperature').text() !== 'N/A') {
     var temperature = $('#temperature').html();
     var wind = $('#wind-speed').html();
 
