@@ -154,7 +154,7 @@ function fetchWeather(lat, lon) {
   request_time = new Date();
   formatTime(request_time);
 
-  var requestUrl = "https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
+  var requestUrl = "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/find?lat=" + lat + "&lon=" + lon + "&units=metric" + "&APPID=b582c1ea9dc1beab9b8742b7382f1ca7";
   $.ajax({
     type: 'GET',
     url: requestUrl,
