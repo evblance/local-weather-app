@@ -178,6 +178,7 @@ function fetchWeather(lat, lon) {
       $('#wind-speed').html(getWindSpeed(weatherData));
       $('#wind-speed-unit').html('km/h');
       $('#humidity-label').html('Humidity: ');
+      $('#humidity-unit').html('%');
       $('#wind-direction').html(getWindDirection(weatherData));
       $('#humidity-value').html(getHumidity(weatherData));
       $('#pressure-label').html('Pressure: ');
