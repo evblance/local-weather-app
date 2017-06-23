@@ -44,6 +44,9 @@ function getConditions(data) {
         weatherImage = 'url("images/cloudy.jpg")';
       }
       break;
+    case 'Mist':
+      weatherImage = 'url("images/mist.jpg")';
+      break;
     case 'Rain':
       weatherImage = 'url("images/rain.jpg")';
       break;
